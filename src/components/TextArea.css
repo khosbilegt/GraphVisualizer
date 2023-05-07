@@ -1,0 +1,7 @@
+.TextArea {
+     background-color: #fff;
+     color: #000;
+     width: 400px;
+     height: 200px;
+     overflow: auto;
+}

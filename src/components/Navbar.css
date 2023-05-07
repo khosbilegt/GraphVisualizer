@@ -1,0 +1,12 @@
+.Navbar {
+     width: 100vw;
+     height: 50px;
+     display: flex;
+     background-color: #4A8CE5;
+     align-items: center;
+}
+
+.Logo {
+     height: 40px;
+     width: auto;
+}

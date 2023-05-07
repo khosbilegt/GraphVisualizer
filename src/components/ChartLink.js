@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 function ChartLink(props) {
      return (
-          <Link to="/" className='ChartLink'>
+          <Link to={props.link} className='ChartLink'>
                <button>
                     <img src={props.img}/>
                     <p>{props.label}</p>
