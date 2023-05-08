@@ -64,6 +64,7 @@ function StackedBarChart() {
  
    useEffect(() => {
      setFormattedData([]);
+     document.title = 'Bar Chart: Stacked';
    }, [])
 
      return (

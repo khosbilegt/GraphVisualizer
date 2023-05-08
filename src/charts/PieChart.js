@@ -61,6 +61,7 @@ function PieChart() {
  
    useEffect(() => {
      setFormattedData([]);
+     document.title = 'Pie Chart';
    }, [])
 
      return (

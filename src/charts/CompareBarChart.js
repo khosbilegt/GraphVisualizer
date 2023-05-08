@@ -60,6 +60,7 @@ function CompareBarChart() {
    }, [formattedData]);
  
    useEffect(() => {
+     document.title = 'Bar Chart: Compare';
      setFormattedData([]);
    }, [])
 

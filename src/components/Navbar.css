@@ -1,9 +1,17 @@
 .Navbar {
      width: 100vw;
      height: 50px;
-     display: flex;
      background-color: #4A8CE5;
      align-items: center;
+     display: flex;
+}
+
+.Navbar ul {
+     padding: 0 25px;
+     width: 100%;
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
 }
 
 .Logo {

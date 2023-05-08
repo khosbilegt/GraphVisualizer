@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import ChartLink from './components/ChartLink';
 import Navbar from './components/Navbar';
 import CompareBarImage from "./assets/images/compare_bar.png";
@@ -7,6 +7,10 @@ import StackedBarImage from "./assets/images/stacked_bar.png";
 import PieImage from "./assets/images/pie.png";
 
 function App() {
+  useEffect(() => {
+    document.title = 'Home'; // Set the document title
+  }, []);
+
   return (
     <div className="App">
       <Navbar />
@@ -14,10 +18,6 @@ function App() {
         <ChartLink img={CompareBarImage} label="Bar Chart (Compare)" link="/compare-bar"/>
         <ChartLink img={StackedBarImage} label="Bar Chart (Stacked)" link="/stacked-bar"/>
         <ChartLink img={PieImage} label="Pie Chart" link="/pie"/>
-        <ChartLink img={CompareBarImage} label="Bar Chart" link="/bar"/>
-        <ChartLink img={CompareBarImage} label="Bar Chart" link="/bar"/>
-        <ChartLink img={CompareBarImage} label="Bar Chart" link="/bar"/>
-        <ChartLink img={CompareBarImage} label="Bar Chart" link="/bar"/>
       </ul>
     </div>
   );

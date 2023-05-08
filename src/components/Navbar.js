@@ -10,6 +10,7 @@ function Table({ data }) {
                <Link to="/">
                     <img className="Logo" src={Logo}/>
                </Link>
+                <p>Contact me at <Link to="https://www.linkedin.com/in/khosbilegt-bilegsaikhan-82929424b/">Khosbilegt Bilegsaikhan</Link></p>
           </ul>
     </div>
   );
