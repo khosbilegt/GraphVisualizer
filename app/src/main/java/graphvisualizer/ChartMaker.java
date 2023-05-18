@@ -12,7 +12,7 @@ import org.jfree.data.xy.DefaultXYDataset;
 public class ChartMaker {
     public JFreeChart createChart(DefaultXYDataset dataset1, DefaultXYDataset dataset2) {
         JFreeChart chart = ChartFactory.createXYLineChart(
-            "Comparison",
+            "",
             "Raman Shift",
             "Intensity",
             null, // Set dataset to null initially
@@ -41,7 +41,7 @@ public class ChartMaker {
     
     public JFreeChart createChart(DefaultXYDataset dataset) {
         JFreeChart chart = ChartFactory.createXYLineChart(
-            "Comparison",
+            "",
             "Raman Shift",
             "Intensity",
             null, // Set dataset to null initially

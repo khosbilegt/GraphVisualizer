@@ -24,6 +24,7 @@ dependencies {
     implementation 'com.google.guava:guava:31.1-jre'
     implementation 'org.jfree:jfreechart:1.5.3'
     implementation 'org.jfree:jcommon:1.0.24'
+    implementation 'com.formdev:flatlaf:3.1.1'
 }
 
 application {
