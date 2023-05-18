@@ -5,8 +5,11 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -43,6 +46,41 @@ public class SingleChartWindow extends ApplicationFrame {
         return dataset2;
     }
     
+    private void firstButtonFileChoose() {
+        JFileChooser fileChooser = new JFileChooser();
+        //fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "txt"));
+        int returnValue = fileChooser.showOpenDialog(null);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            FileReader reader = new FileReader(selectedFile.getAbsolutePath());
+            data1 = DataProcessor.processData(reader.getLines());
+            createDataset1();
+            XYPlot plot = chartPanel.getChart().getXYPlot();
+            plot.setDataset(0, dataset1);
+
+            chartPanel.repaint();
+        }
+    }
+    
+    private void secondButtonFileChoose() {
+        JFileChooser fileChooser = new JFileChooser();
+        //fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "txt"));
+        int returnValue = fileChooser.showOpenDialog(null);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            FileReader reader = new FileReader(selectedFile.getAbsolutePath());
+
+            data2 = DataProcessor.processData(reader.getLines());
+            createDataset2();
+            XYPlot plot = chartPanel.getChart().getXYPlot();
+            plot.setDataset(1, dataset2);
+
+            chartPanel.repaint();
+        }
+    }
+    
     public JPanel sidebar() {
         JPanel sidebarPanel = new JPanel();
         sidebarPanel.setPreferredSize(new Dimension(200, 800));
@@ -54,48 +92,53 @@ public class SingleChartWindow extends ApplicationFrame {
             e.printStackTrace();
         }
    
-        JButton firstButton = new JButton("Open File");
-        firstButton.addActionListener(new ActionListener() {
+        JButton firstFileButton = new JButton("Open File");
+        firstFileButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
-                //fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
-                fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "txt"));
-                int returnValue = fileChooser.showOpenDialog(null);
-                if (returnValue == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = fileChooser.getSelectedFile();
-                    FileReader reader = new FileReader(selectedFile.getAbsolutePath());
-                    data1 = DataProcessor.processData(reader.getLines());
-                    createDataset1();
-                    XYPlot plot = chartPanel.getChart().getXYPlot();
-                    plot.setDataset(0, dataset1);
-                    
-                    chartPanel.repaint();
-                }
+                firstButtonFileChoose();
             }
         });
-        sidebarPanel.add(firstButton);
+        sidebarPanel.add(firstFileButton);
         
-        JButton secondButton = new JButton("Open File");
-        secondButton.addActionListener(new ActionListener() {
+        JButton firstTextButton = new JButton("Use Text");
+        firstTextButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
-                //fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
-                fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "txt"));
-                int returnValue = fileChooser.showOpenDialog(null);
-                if (returnValue == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = fileChooser.getSelectedFile();
-                    FileReader reader = new FileReader(selectedFile.getAbsolutePath());
-                    
-                    data2 = DataProcessor.processData(reader.getLines());
-                    createDataset2();
-                    XYPlot plot = chartPanel.getChart().getXYPlot();
-                    plot.setDataset(1, dataset2);
-                    
-                    chartPanel.repaint();
-                }
+                String input = CustomDialog.showDialog(null);
+                String[] lines = input.split("\n");
+                List<String> linesList = Arrays.asList(lines);
+                data1 = DataProcessor.processData(linesList);
+                createDataset1();
+                XYPlot plot = chartPanel.getChart().getXYPlot();
+                plot.setDataset(0, dataset1);
+
+                chartPanel.repaint();
             }
         });
-        sidebarPanel.add(secondButton);
+        sidebarPanel.add(firstTextButton);
+        
+        JButton secondFileButton = new JButton("Open File");
+        secondFileButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                secondButtonFileChoose();
+            }
+        });
+        sidebarPanel.add(secondFileButton);
+        
+        JButton secondTextButton = new JButton("Use Text");
+        secondTextButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String input = CustomDialog.showDialog(null);
+                String[] lines = input.split("\n");
+                List<String> linesList = Arrays.asList(lines);
+                data2 = DataProcessor.processData(linesList);
+                createDataset2();
+                XYPlot plot = chartPanel.getChart().getXYPlot();
+                plot.setDataset(1, dataset2);
+
+                chartPanel.repaint();
+            }
+        });
+        sidebarPanel.add(secondTextButton);
         
         return sidebarPanel;
     }
