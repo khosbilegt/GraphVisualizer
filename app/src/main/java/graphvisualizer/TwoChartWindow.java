@@ -16,13 +16,12 @@ import org.jfree.chart.ui.ApplicationFrame;
 import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.data.xy.XYDataset;
 
-import com.formdev.flatlaf.FlatLaf;
-import com.formdev.flatlaf.FlatLightLaf;
-import static graphvisualizer.SingleChartWindow.chartPanel;
+import java.awt.Font;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.Box;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 public class TwoChartWindow extends ApplicationFrame {        
     public static ChartPanel chartPanel1;
@@ -106,7 +105,6 @@ public class TwoChartWindow extends ApplicationFrame {
                 firstButtonFileChoose();
             }
         });
-        sidebarPanel.add(firstFileButton);
         
         JButton firstTextButton = new JButton("Use Text");
         firstTextButton.addActionListener(new ActionListener() {
@@ -123,7 +121,6 @@ public class TwoChartWindow extends ApplicationFrame {
                 chartPanel2.repaint();
             }
         });
-        sidebarPanel.add(firstTextButton);
         
         JButton secondFileButton = new JButton("Open File");
         secondFileButton.addActionListener(new ActionListener() {
@@ -131,7 +128,6 @@ public class TwoChartWindow extends ApplicationFrame {
                 secondButtonFileChoose();
             }
         });
-        sidebarPanel.add(secondFileButton);
         
         JButton secondTextButton = new JButton("Use Text");
         secondTextButton.addActionListener(new ActionListener() {
@@ -149,7 +145,29 @@ public class TwoChartWindow extends ApplicationFrame {
                 chartPanel2.repaint();
             }
         });
-        sidebarPanel.add(secondTextButton);
+        
+        JLabel firstLabel = new JLabel("1-р Хүснэгт");
+        firstLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        Font firstFont = firstLabel.getFont();
+        firstLabel.setFont(firstFont.deriveFont(Font.PLAIN, 12f));
+        
+        JLabel secondLabel = new JLabel("2-р Хүснэгт");
+        secondLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        Font secondFont = secondLabel.getFont();
+        secondLabel.setFont(secondFont.deriveFont(Font.PLAIN, 12f));
+        
+        Box firstHorizontalBox = Box.createHorizontalBox();
+        firstHorizontalBox.add(firstFileButton);
+        firstHorizontalBox.add(firstTextButton);
+        
+        Box secondHorizontalBox = Box.createHorizontalBox();
+        secondHorizontalBox.add(secondFileButton);
+        secondHorizontalBox.add(secondTextButton);
+        
+        sidebarPanel.add(firstLabel);
+        sidebarPanel.add(firstHorizontalBox);
+        sidebarPanel.add(secondLabel);
+        sidebarPanel.add(secondHorizontalBox);
         
         return sidebarPanel;
     }

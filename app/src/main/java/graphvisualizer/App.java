@@ -75,7 +75,7 @@ public class App extends ApplicationFrame  {
         
     private JPanel mainArea() {
         JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(600, 400));
+        panel.setPreferredSize(new Dimension(600, 200));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         
         try {
@@ -86,18 +86,18 @@ public class App extends ApplicationFrame  {
         }
         
         JLabel label = new JLabel("Та ашиглах төрлөө сонгоно уу");
-        label.setAlignmentY(0.5f);
+        label.setHorizontalAlignment(SwingConstants.CENTER);
         Font font = label.getFont();
         label.setFont(font.deriveFont(Font.PLAIN, 20f));
         
-        JButton comparisonButton = new JButton("Comparison Chart");
+        JButton comparisonButton = new JButton("Давхарласан Хүснэгт");
         comparisonButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 newComparisonWindow();
             }
         });
         
-        JButton dualButton = new JButton("Dual Chart");
+        JButton dualButton = new JButton("Салангид Хүснэгт");
         dualButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 newDualWindow();
@@ -105,11 +105,18 @@ public class App extends ApplicationFrame  {
         });
         
         Box horizontalBox = Box.createHorizontalBox();
+        horizontalBox.add(Box.createHorizontalGlue());
         horizontalBox.add(comparisonButton);
+        horizontalBox.add(Box.createRigidArea(new Dimension(10, 0))); // Adds a fixed horizontal space of 10 pixels
         horizontalBox.add(dualButton);
+        horizontalBox.add(Box.createHorizontalGlue());
+
+        comparisonButton.setMaximumSize(new Dimension(200, 100));
+        dualButton.setMaximumSize(new Dimension(200, 100));
         
         Box verticalBox = Box.createVerticalBox();
         verticalBox.add(label);
+        verticalBox.add(Box.createVerticalStrut(10));
         verticalBox.add(horizontalBox);
 
         panel.add(verticalBox);

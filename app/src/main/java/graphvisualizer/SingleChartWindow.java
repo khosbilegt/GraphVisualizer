@@ -2,15 +2,20 @@ package graphvisualizer;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.jfree.chart.ChartPanel;
@@ -85,6 +90,7 @@ public class SingleChartWindow extends ApplicationFrame {
         JPanel sidebarPanel = new JPanel();
         sidebarPanel.setPreferredSize(new Dimension(200, 800));
         sidebarPanel.setBackground(Color.LIGHT_GRAY);
+        sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
         
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
@@ -98,7 +104,6 @@ public class SingleChartWindow extends ApplicationFrame {
                 firstButtonFileChoose();
             }
         });
-        sidebarPanel.add(firstFileButton);
         
         JButton firstTextButton = new JButton("Use Text");
         firstTextButton.addActionListener(new ActionListener() {
@@ -114,7 +119,6 @@ public class SingleChartWindow extends ApplicationFrame {
                 chartPanel.repaint();
             }
         });
-        sidebarPanel.add(firstTextButton);
         
         JButton secondFileButton = new JButton("Open File");
         secondFileButton.addActionListener(new ActionListener() {
@@ -122,7 +126,6 @@ public class SingleChartWindow extends ApplicationFrame {
                 secondButtonFileChoose();
             }
         });
-        sidebarPanel.add(secondFileButton);
         
         JButton secondTextButton = new JButton("Use Text");
         secondTextButton.addActionListener(new ActionListener() {
@@ -138,7 +141,29 @@ public class SingleChartWindow extends ApplicationFrame {
                 chartPanel.repaint();
             }
         });
-        sidebarPanel.add(secondTextButton);
+        
+        JLabel firstLabel = new JLabel("Ногоон");
+        firstLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        Font firstFont = firstLabel.getFont();
+        firstLabel.setFont(firstFont.deriveFont(Font.PLAIN, 12f));
+        
+        JLabel secondLabel = new JLabel("Улаан");
+        secondLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        Font secondFont = secondLabel.getFont();
+        secondLabel.setFont(secondFont.deriveFont(Font.PLAIN, 12f));
+        
+        Box firstHorizontalBox = Box.createHorizontalBox();
+        firstHorizontalBox.add(firstFileButton);
+        firstHorizontalBox.add(firstTextButton);
+        
+        Box secondHorizontalBox = Box.createHorizontalBox();
+        secondHorizontalBox.add(secondFileButton);
+        secondHorizontalBox.add(secondTextButton);
+        
+        sidebarPanel.add(firstLabel);
+        sidebarPanel.add(firstHorizontalBox);
+        sidebarPanel.add(secondLabel);
+        sidebarPanel.add(secondHorizontalBox);
         
         return sidebarPanel;
     }
