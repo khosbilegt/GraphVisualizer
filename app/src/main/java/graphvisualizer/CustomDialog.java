@@ -6,8 +6,8 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 public class CustomDialog extends JDialog {
     private JTextArea textArea;
@@ -16,13 +16,18 @@ public class CustomDialog extends JDialog {
         super(parent, "Мэдээлэл оруулах хэсэг", true);
         textArea = new JTextArea();
         textArea.setPreferredSize(new Dimension(200, 100));
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        
         JButton okButton = new JButton("OK");
         
         okButton.addActionListener(e -> dispose()); // Close the dialog
         
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        
         JPanel panel = new JPanel();
         panel.add(new JLabel("Мэдээллийг оруулна уу:"));
-        panel.add(textArea);
+        panel.add(scrollPane);
         panel.add(okButton);
         
         add(panel);
