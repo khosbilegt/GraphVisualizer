@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
@@ -86,7 +87,8 @@ public class App extends ApplicationFrame  {
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             FileReader reader = new FileReader(selectedFile.getAbsolutePath());
-            String input = CustomDialog.showDialog(null);
+            String input = FileInputDialog.showDialog(null);
+            reader.writeToFile(databaseFolder.getAbsolutePath() + "/" + input + ".txt");
         }
     }
         
@@ -155,7 +157,10 @@ public class App extends ApplicationFrame  {
         addDialogButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 //newDualWindow();
-                String input = CustomDialog.showDialog(null);
+                List<String> result = TextInputDialog.showDialog(null);
+                FileReader reader = new FileReader();
+                reader.setLines(result.get(1));
+                reader.writeToFile(databaseFolder.getAbsolutePath() + "/" + result.get(0) + ".txt");
             }
         });
         

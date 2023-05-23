@@ -6,10 +6,15 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FileReader {
     List<String> lines;
+    
+    public FileReader() {
+        
+    }
     
     public FileReader(String path) {
         try {
@@ -22,6 +27,15 @@ public class FileReader {
     
     public List<String> getLines() {
         return lines;
+    }
+    
+    public void setLines(String content) {
+        lines = new ArrayList<>();
+
+        String[] splitLines = content.split("\\n");
+        for (String line : splitLines) {
+            lines.add(line);
+        }
     }
     
     public Boolean writeToFile(String path) {

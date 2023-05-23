@@ -109,7 +109,7 @@ public class TwoChartWindow extends ApplicationFrame {
         JButton firstTextButton = new JButton("Use Text");
         firstTextButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String input = CustomDialog.showDialog(null);
+                String input = TextInputDialog.showDialog(null).get(0);
                 String[] lines = input.split("\n");
                 List<String> linesList = Arrays.asList(lines);
                 data1 = DataProcessor.processData(linesList);
@@ -132,7 +132,7 @@ public class TwoChartWindow extends ApplicationFrame {
         JButton secondTextButton = new JButton("Use Text");
         secondTextButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String input = CustomDialog.showDialog(null);
+                String input = TextInputDialog.showDialog(null).get(0);
                 String[] lines = input.split("\n");
                 List<String> linesList = Arrays.asList(lines);
                 
