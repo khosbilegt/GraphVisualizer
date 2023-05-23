@@ -17,11 +17,21 @@ import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.data.xy.XYDataset;
 
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileSystemView;
 
 public class TwoChartWindow extends ApplicationFrame {        
     public static ChartPanel chartPanel1;
@@ -33,142 +43,76 @@ public class TwoChartWindow extends ApplicationFrame {
     public DefaultXYDataset dataset1;
     public DefaultXYDataset dataset2;
     
-    public TwoChartWindow(String title) {
+    File databaseFolder = FileSystemView.getFileSystemView().getHomeDirectory();
+    List<String> files = new ArrayList<>();
+    
+    public TwoChartWindow(String title, File databaseFolder) {
         super(title);
+        this.databaseFolder = databaseFolder;
     }
             
-    private XYDataset createDataset1() {
+    private XYDataset createDataset1(String fileName) {
         dataset1 = new DefaultXYDataset();
-        dataset1.removeSeries("Negative");
-        dataset1.addSeries("Negative", data1);
+        dataset1.removeSeries(fileName);
+        dataset1.addSeries(fileName, data1);
         return dataset1;
     }
     
-    private XYDataset createDataset2() {
+    private XYDataset createDataset2(String fileName) {
         dataset2 = new DefaultXYDataset();
-        dataset2.removeSeries("Positive");
-        dataset2.addSeries("Positive", data2);
+        dataset2.removeSeries(fileName);
+        dataset2.addSeries(fileName, data2);
         return dataset2;
-    }
-    
-    private void firstButtonFileChoose() {
-        JFileChooser fileChooser = new JFileChooser();
-        //fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
-        fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "txt"));
-        int returnValue = fileChooser.showOpenDialog(null);
-        if (returnValue == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            FileReader reader = new FileReader(selectedFile.getAbsolutePath());
-            data1 = DataProcessor.processData(reader.getLines());
-            createDataset1();
-            XYPlot plot = chartPanel1.getChart().getXYPlot();
-            plot.setDataset(0, dataset1);
-
-            chartPanel1.repaint();
-            chartPanel2.repaint();
-        }
-    }
-    
-    private void secondButtonFileChoose() {
-        JFileChooser fileChooser = new JFileChooser();
-        //fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
-        fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "txt"));
-        int returnValue = fileChooser.showOpenDialog(null);
-        if (returnValue == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            FileReader reader = new FileReader(selectedFile.getAbsolutePath());
-
-            data2 = DataProcessor.processData(reader.getLines());
-            createDataset2();
-            XYPlot plot = chartPanel2.getChart().getXYPlot();
-            plot.setDataset(1, dataset2);
-
-            chartPanel1.repaint();
-            chartPanel2.repaint();
-        }
     }
     
     public JPanel sidebar() {
         JPanel sidebarPanel = new JPanel();
         sidebarPanel.setPreferredSize(new Dimension(200, 800));
         sidebarPanel.setBackground(Color.LIGHT_GRAY);
+        sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
         
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (Exception e) {
             e.printStackTrace();
         }
-   
-        JButton firstFileButton = new JButton("Open File");
-        firstFileButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                firstButtonFileChoose();
-            }
-        });
         
-        JButton firstTextButton = new JButton("Use Text");
-        firstTextButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String input = TextInputDialog.showDialog(null).get(0);
-                String[] lines = input.split("\n");
-                List<String> linesList = Arrays.asList(lines);
-                data1 = DataProcessor.processData(linesList);
-                createDataset1();
-                XYPlot plot = chartPanel1.getChart().getXYPlot();
-                plot.setDataset(0, dataset1);
+        files = FolderHandler.getAllFilesInFolder(databaseFolder.getAbsolutePath());
+        
+        DefaultListModel<String> model = new DefaultListModel<>();
+        for(int i = 0; i < files.size(); i++) {
+            model.addElement(files.get(i));
+        }
 
-                chartPanel1.repaint();
-                chartPanel2.repaint();
+        JList<String> buttonList = new JList<>(model);
+        buttonList.setCellRenderer(new ButtonCellRenderer());
+        buttonList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        buttonList.setVisibleRowCount(-1);
+        buttonList.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                int index = buttonList.locationToIndex(e.getPoint());
+                if (index != -1) {
+                    FileReader reader = new FileReader(databaseFolder.getAbsolutePath() + "/" + files.get(index));
+                    if (SwingUtilities.isRightMouseButton(e)) {
+                        data1 = DataProcessor.processData(reader.getLines());
+                        createDataset1(files.get(index));
+                        XYPlot plot = chartPanel1.getChart().getXYPlot();
+                        plot.setDataset(0, dataset1);
+                        chartPanel1.repaint();
+                    } else if (SwingUtilities.isLeftMouseButton(e)) {
+                        data2 = DataProcessor.processData(reader.getLines());
+                        createDataset2(files.get(index));
+                        XYPlot plot = chartPanel2.getChart().getXYPlot();
+                        plot.setDataset(1, dataset2);
+                        chartPanel2.repaint();
+                    }
+                }
             }
         });
-        
-        JButton secondFileButton = new JButton("Open File");
-        secondFileButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                secondButtonFileChoose();
-            }
-        });
-        
-        JButton secondTextButton = new JButton("Use Text");
-        secondTextButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String input = TextInputDialog.showDialog(null).get(0);
-                String[] lines = input.split("\n");
-                List<String> linesList = Arrays.asList(lines);
-                
-                data2 = DataProcessor.processData(linesList);
-                createDataset2();
-                XYPlot plot = chartPanel2.getChart().getXYPlot();
-                plot.setDataset(1, dataset2);
 
-                chartPanel1.repaint();
-                chartPanel2.repaint();
-            }
-        });
+        JScrollPane scrollPane = new JScrollPane(buttonList);
         
-        JLabel firstLabel = new JLabel("1-р Хүснэгт");
-        firstLabel.setHorizontalAlignment(SwingConstants.LEFT);
-        Font firstFont = firstLabel.getFont();
-        firstLabel.setFont(firstFont.deriveFont(Font.PLAIN, 12f));
-        
-        JLabel secondLabel = new JLabel("2-р Хүснэгт");
-        secondLabel.setHorizontalAlignment(SwingConstants.LEFT);
-        Font secondFont = secondLabel.getFont();
-        secondLabel.setFont(secondFont.deriveFont(Font.PLAIN, 12f));
-        
-        Box firstHorizontalBox = Box.createHorizontalBox();
-        firstHorizontalBox.add(firstFileButton);
-        firstHorizontalBox.add(firstTextButton);
-        
-        Box secondHorizontalBox = Box.createHorizontalBox();
-        secondHorizontalBox.add(secondFileButton);
-        secondHorizontalBox.add(secondTextButton);
-        
-        sidebarPanel.add(firstLabel);
-        sidebarPanel.add(firstHorizontalBox);
-        sidebarPanel.add(secondLabel);
-        sidebarPanel.add(secondHorizontalBox);
-        
+        sidebarPanel.add(scrollPane);
         return sidebarPanel;
     }
 }

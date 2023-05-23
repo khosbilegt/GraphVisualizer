@@ -25,7 +25,7 @@ public class App extends ApplicationFrame  {
     private void newComparisonWindow() {
         ChartMaker chartMaker = new ChartMaker();
 
-        SingleChartWindow window = new SingleChartWindow("Comparison Visualization");
+        SingleChartWindow window = new SingleChartWindow("Comparison Visualization", databaseFolder);
         JFreeChart chart1 = chartMaker.createChart(window.dataset1, window.dataset2);
         window.chartPanel = new ChartPanel(chart1);
         window.chartPanel.setPreferredSize(new Dimension(1000, 700));
@@ -49,7 +49,7 @@ public class App extends ApplicationFrame  {
     private void newDualWindow() {
         ChartMaker chartMaker = new ChartMaker();
             
-        TwoChartWindow window = new TwoChartWindow("Comparison Visualization");
+        TwoChartWindow window = new TwoChartWindow("Comparison Visualization", databaseFolder);
         JFreeChart chart1 = chartMaker.createChart(window.dataset1);
         JFreeChart chart2 = chartMaker.createChart(window.dataset2);
         window.chartPanel1 = new ChartPanel(chart1);
