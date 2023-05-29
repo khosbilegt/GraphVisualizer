@@ -46,6 +46,16 @@ public class App extends ApplicationFrame  {
         window.setVisible(true);
     }
     
+    
+    private void newDataWindow() {
+        FileListWindow window = new FileListWindow("Database", databaseFolder);
+        
+        window.getContentPane().add(window.mainPanel());
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.pack();
+        window.setVisible(true);
+    }
+    
     private void newDualWindow() {
         ChartMaker chartMaker = new ChartMaker();
             
@@ -123,8 +133,19 @@ public class App extends ApplicationFrame  {
             }
         });
         
+        
+        JButton seeDataButton = new JButton("Өгөгдөл харах");
+        seeDataButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                newDataWindow();
+            }
+        });
+        
         Box horizontalBox = Box.createHorizontalBox();
         horizontalBox.add(Box.createHorizontalGlue());
+        horizontalBox.add(Box.createRigidArea(new Dimension(10, 0))); 
+        horizontalBox.add(seeDataButton);
+        horizontalBox.add(Box.createRigidArea(new Dimension(10, 0))); // Add
         horizontalBox.add(comparisonButton);
         horizontalBox.add(Box.createRigidArea(new Dimension(10, 0))); // Adds a fixed horizontal space of 10 pixels
         horizontalBox.add(dualButton);
@@ -132,6 +153,7 @@ public class App extends ApplicationFrame  {
 
         comparisonButton.setMaximumSize(new Dimension(200, 100));
         dualButton.setMaximumSize(new Dimension(200, 100));
+        seeDataButton.setMaximumSize(new Dimension(200, 100));
         
         JButton chooseFolderButton = new JButton("Өгөгдлийн сан сонгох");
         chooseFolderButton.addActionListener(new ActionListener() {
@@ -164,9 +186,18 @@ public class App extends ApplicationFrame  {
             }
         });
         
+        JButton augmentDataButton = new JButton("Өгөгдөл нэмэгдүүлэх");
+        augmentDataButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Add function here
+            }
+        });
+        
         Box addHorizontalBox = Box.createHorizontalBox();
         addHorizontalBox.add(Box.createHorizontalGlue());
         addHorizontalBox.add(chooseFolderButton);
+        addHorizontalBox.add(Box.createRigidArea(new Dimension(10, 0))); 
+        addHorizontalBox.add(augmentDataButton);
         addHorizontalBox.add(Box.createRigidArea(new Dimension(10, 0))); 
         addHorizontalBox.add(addFileButton);
         addHorizontalBox.add(Box.createRigidArea(new Dimension(10, 0))); // Adds a fixed horizontal space of 10 pixels
@@ -174,11 +205,11 @@ public class App extends ApplicationFrame  {
         addHorizontalBox.add(Box.createHorizontalGlue());
 
         chooseFolderButton.setMaximumSize(new Dimension(200, 100));
+        augmentDataButton.setMaximumSize(new Dimension(200, 100));
         addFileButton.setMaximumSize(new Dimension(200, 100));
         addDialogButton.setMaximumSize(new Dimension(200, 100));
         
         Box verticalBox = Box.createVerticalBox();
-        verticalBox.add(label);
         verticalBox.add(Box.createVerticalStrut(10));
         verticalBox.add(addHorizontalBox);
         verticalBox.add(Box.createVerticalStrut(10));

@@ -81,7 +81,9 @@ public class SingleChartWindow extends ApplicationFrame {
         
         DefaultListModel<String> model = new DefaultListModel<>();
         for(int i = 0; i < files.size(); i++) {
-            model.addElement(files.get(i));
+            if(files.get(i).contains(".txt")) {
+                model.addElement(files.get(i));
+            }
         }
 
         JList<String> buttonList = new JList<>(model);
